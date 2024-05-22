@@ -21,6 +21,8 @@
 - OAuth2 Client(추후)
 - AOP(추후)
 
+### ERD(초안)
+![mozip.png](/src/main/resources/static/images/mozip.png)
 ### DB 최초 세팅
 - 계정 생성(system 계정으로 접속 후 명령어 입력)
     ```sql
