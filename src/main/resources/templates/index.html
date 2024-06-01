@@ -27,6 +27,8 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script th:src="@{/js/index.js}"></script>
   <script th:src="@{/js/common.js}"></script>
+  <!-- favicon -->
+  <link rel="icon" th:href="@{/img/favicon.ico}">
 </head>
 <body>
 <header>
@@ -35,7 +37,22 @@
 <!-- main -->
 <main>
   <!-- swiper -->
-  <div class="swi"></div>
+  <div class="swi">
+    <div class="swiper bnr-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <img th:src="@{/img/banner01.jpg}" alt="배너01">
+        </div>
+        <div class="swiper-slide">
+          <img th:src="@{/img/banner02.jpg}" alt="배너02">
+        </div>
+        <div class="swiper-slide">
+          <img th:src="@{/img/banner03.jpg}" alt="배너03">
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
   <!-- container -->
   <div class="wrap">
     <div class="container">
@@ -498,5 +515,4 @@
   <th:block th:replace="~{fragment/footer}"></th:block>
 </footer>
 </body>
-
 </html>
