@@ -5,7 +5,6 @@ import com.mozip.dto.resp.ProjectListDto;
 import com.mozip.dto.resp.RecruitListDto;
 import com.mozip.dto.resp.ProjectMemberDto;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProjectRepository {
