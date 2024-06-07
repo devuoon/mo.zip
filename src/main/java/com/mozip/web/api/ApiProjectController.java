@@ -1,8 +1,10 @@
 package com.mozip.web.api;
 
+import com.mozip.domain.likes.Likes;
 import com.mozip.dto.CMRespDto;
 import com.mozip.dto.req.ProjectCreateDto;
 import com.mozip.dto.req.ProjectLikeDto;
+import com.mozip.service.LikesService;
 import com.mozip.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.Map;
 @RestController
 public class ApiProjectController {
     private final ProjectService projectService;
+    private final LikesService likesService;
 
     @PostMapping("/project/create")
     public ResponseEntity<?> createProject(@RequestBody ProjectCreateDto dto) {
@@ -27,11 +30,11 @@ public class ApiProjectController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<?> likeProject(@RequestBody ProjectLikeDto projectLikeDto){
+    public ResponseEntity<?> likeProject(@RequestBody Likes likes){
         // 좋아요, 좋아요 취소 구분하여 처리
-        projectService.likeValidation(projectLikeDto);
+        likesService.likeValidation(likes);
 
-        return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공", projectService.likeCount(projectLikeDto.getProjectId())));
+        return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공", likesService.likeCount(likes.getProjectId())));
     }
 
     // 프로젝트 삭제 메서드
@@ -40,6 +43,6 @@ public class ApiProjectController {
 
         projectService.deleteProject(projectId); // 프로젝트 삭제 로직
 
-        return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공",projectId))
+        return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공",projectId));
     }
 }
