@@ -2,6 +2,7 @@ package com.mozip.web.api;
 
 import com.mozip.dto.CMRespDto;
 import com.mozip.dto.req.ProjectCreateDto;
+import com.mozip.dto.req.ProjectLikeDto;
 import com.mozip.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,12 +26,20 @@ public class ApiProjectController {
         return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공",projectId));
     }
 
+    @PostMapping("/like")
+    public ResponseEntity<?> likeProject(@RequestBody ProjectLikeDto projectLikeDto){
+        // 좋아요, 좋아요 취소 구분하여 처리
+        projectService.likeValidation(projectLikeDto);
+
+        return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공", projectService.likeCount(projectLikeDto.getProjectId())));
+    }
+
     // 프로젝트 삭제 메서드
     @DeleteMapping("/project/{projectId}")
     public ResponseEntity<?> deleteProject(@PathVariable("projectId") int projectId) {
 
         projectService.deleteProject(projectId); // 프로젝트 삭제 로직
 
-        return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공",projectId));
+        return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공",projectId))
     }
 }

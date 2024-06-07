@@ -1,6 +1,7 @@
 package com.mozip.domain.project;
 
 import com.mozip.dto.req.ProjectCreateDto;
+import com.mozip.dto.req.ProjectLikeDto;
 import com.mozip.dto.resp.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -88,6 +89,17 @@ public interface ProjectRepository {
     String findProjectName(@Param("projectName") String projectName);
 
     int findViewCount(@Param("projectId") int projectId);
+
+    int findGetViewCount(int projectId);
+
+    // 좋아요
+    void addLike(@Param("dto") ProjectLikeDto dto);
+
+    // 좋아요 취소
+    void deleteLike(@Param("dto") ProjectLikeDto dto);
+
+    // 사용자가 해당 프로젝트에 좋아요를 누른적이 있는지 체크
+    int checkLike(@Param("projectId") int projectId, @Param("memberId") int memberId);
 
     // 프로젝트자랑페이지 : 프로젝트 삭제
     void deleteProject(@Param("projectId") int projectId);
