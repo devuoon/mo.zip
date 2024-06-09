@@ -100,4 +100,24 @@ public class ApiProjectController {
 
         return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공", keepService.keepCount(keep.getProjectId(), keep.getMemberId())));
     }
+
+    // 프로젝트모집 카테고리 필터
+    @PostMapping("/project/filter")
+    public ResponseEntity<?> filterProject(@RequestParam("filter") String filter){
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectFilterSearch(filter)));
+    }
+
+    // 프로젝트모집 셀렉트 필터
+    @GetMapping("/project/select/{filter}")
+    public ResponseEntity<?> selectFilterProject(@PathVariable("filter") String filter){
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectSelectFilterSearch(filter)));
+    }
+
+    // 프로젝트모집 타입 필터
+    @GetMapping("/project/type/{filter}")
+    public ResponseEntity<?> selectProjectTypeFilter(@PathVariable("filter") String filter){
+        if(filter.equals("스터디모집"))
+            filter="모집/스터디";
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectSelectTypeFilter(filter)));
+    }
 }

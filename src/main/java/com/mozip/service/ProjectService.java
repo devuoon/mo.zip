@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.NClob;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -309,4 +310,52 @@ public class ProjectService {
         return recruitListDtos;
     }
 
+    // 멤버모집 필터
+    public List<RecruitListDto> projectFilterSearch(String filter){
+        List<Integer> projectFilterId = projectRepository.filterSearch(filter);
+        List<RecruitListDto> recruitListDtos = new ArrayList<>();
+        for (Integer projectId : projectFilterId) {
+            recruitListDtos.add(projectRepository.findOneRecruit(projectId));
+        }
+        for (RecruitListDto dto : recruitListDtos) {
+            dto.setRoleNames(projectRepository.findRecruitRoles(dto.getId()));
+            dto.setCreateTime(Util.formatTimestamp(Timestamp.valueOf(dto.getCreateTime())));
+            dto.setSubscribe(projectRepository.findSubscribeCount(dto.getId()));
+            dto.setProjectInfo(Util.clobToString((NClob) dto.getProjectInfo()));
+        }
+        return recruitListDtos;
+    }
+
+    // 셀렉트 필터
+    public List<RecruitListDto> projectSelectFilterSearch(String filter) {
+        List<Integer> projectFilterId = projectRepository.selectFilter(Integer.parseInt(filter));
+        List<RecruitListDto> recruitListDtos = new ArrayList<>();
+        for (Integer projectId : projectFilterId) {
+            recruitListDtos.add(projectRepository.findOneRecruit(projectId));
+        }
+        for (RecruitListDto dto : recruitListDtos) {
+            dto.setRoleNames(projectRepository.findRecruitRoles(dto.getId()));
+            dto.setCreateTime(Util.formatTimestamp(Timestamp.valueOf(dto.getCreateTime())));
+            dto.setSubscribe(projectRepository.findSubscribeCount(dto.getId()));
+            dto.setProjectInfo(Util.clobToString((NClob) dto.getProjectInfo()));
+        }
+        return recruitListDtos;
+    }
+
+    // 프로젝트 타입 필터
+    public List<RecruitListDto> projectSelectTypeFilter(String filter) {
+        List<Integer> projectFilterId = projectRepository.projectTypeFilter(filter);
+
+        List<RecruitListDto> recruitListDtos = new ArrayList<>();
+        for (Integer projectId : projectFilterId) {
+            recruitListDtos.add(projectRepository.findOneRecruit(projectId));
+        }
+        for (RecruitListDto dto : recruitListDtos) {
+            dto.setRoleNames(projectRepository.findRecruitRoles(dto.getId()));
+            dto.setCreateTime(Util.formatTimestamp(Timestamp.valueOf(dto.getCreateTime())));
+            dto.setSubscribe(projectRepository.findSubscribeCount(dto.getId()));
+            dto.setProjectInfo(Util.clobToString((NClob) dto.getProjectInfo()));
+        }
+        return recruitListDtos;
+    }
 }
