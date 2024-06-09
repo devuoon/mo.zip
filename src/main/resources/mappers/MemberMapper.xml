@@ -122,7 +122,9 @@
 
     <!-- 기존 스킬을 삭제하는 쿼리 -->
     <delete id="deleteSkills" parameterType="int">
-        DELETE FROM MEMBER_SKILL WHERE MEMBER_ID = #{memberId}
+        DELETE
+        FROM MEMBER_SKILL
+        WHERE MEMBER_ID = #{memberId}
     </delete>
 
     <!-- 새로운 스킬을 삽입하는 쿼리 -->
@@ -130,7 +132,7 @@
         INSERT INTO MEMBER_SKILL (ID, MEMBER_ID, SKILL_NAME)
         VALUES (MEMBER_SKILL_SEQ.nextval, #{memberId}, #{skill})
     </insert>
-    
+
     <!-- 프로필 이미지 등록 -->
     <update id="updateProfileImg">
         UPDATE MEMBER
