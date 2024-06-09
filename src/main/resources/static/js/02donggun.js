@@ -142,45 +142,92 @@ function validateForm() {
     return valid;
 }
 
+var imageFile;
+
+document.getElementById('profileImage').addEventListener('click', function () {
+    document.getElementById('fileInput').click();
+});
+
+document.getElementById('fileInput').addEventListener('change', function (event) {
+    let file = event.target.files[0];
+
+    if (!file.type.match("image.*")) {
+        alert("이미지를 등록해야 합니다.");
+        return;
+    }
+
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('profileImage').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+
+        // 이미지를 서버에 업로드하는 함수 호출 (Ajax 사용)
+        imageFile = file;
+    }
+});
+
 function sendFormData() {
-    let formData = $("#profile-form").serializeArray();
-    console.log(formData);
-
-    let id = document.querySelector("#userId").value;
-    let email = document.querySelector("#email").value;
-    let career = document.querySelector("#experience-container").value;
-    let githubLink = document.querySelector("#urlInput").value;
-    let position = document.querySelector("#skill").value;
-    let info = document.querySelector("#introduceInput").value;
-
     let jsonData = {};
-    jsonData.memberId = id;
-    jsonData.email = email;
-    jsonData.career = career;
-    jsonData.githubLink = githubLink;
-    jsonData.position = position;
-    jsonData.info = info;
+    let memberId = document.querySelector("#userId").value;
+    jsonData.memberId = memberId;
+    jsonData.email = document.querySelector("#email").value;
+    jsonData.career = document.querySelector("#experience-container").value;
+    jsonData.githubLink = document.querySelector("#urlInput").value;
+    jsonData.position = document.querySelector("#skill").value;
+    jsonData.info = document.querySelector("#introduceInput").value;
 
     let skills = [];
 
     document.querySelectorAll(".projectSkill").forEach(item => {
         skills.push(item.textContent);
     });
-
     jsonData.skills = skills;
 
-    console.log(jsonData);
+    if (imageFile != null) {
+        let formData = new FormData();
+        formData.append("file", imageFile);
 
-    $.ajax({
-        type: "post",
-        url: "/api/member/edit",
-        data: JSON.stringify(jsonData),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json"
-    }).done(res => {
-        console.log("성공", res);
-        window.location.href = "/member/" + id;
-    }).fail(error => {
-        console.log("실패", error);
-    });
+        $.ajax({
+            type: "post",
+            url: "/api/member/edit",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(jsonData),
+            dataType: "json",
+        }).done(res => {
+            console.log("성공", res);
+            $.ajax({
+                url: "/api/member/profile",
+                type: "post",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log('Success:', response);
+                    alert("정보 수정 완료 !");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', textStatus, errorThrown);
+                }
+            })
+            window.location.assign(`/`);
+        }).fail(error => {
+            console.log("실패", error);
+        });
+    } else {
+        $.ajax({
+            type: "post",
+            url: "/api/member/edit",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(jsonData),
+            dataType: "json",
+        }).done(res => {
+            console.log("성공", res);
+            alert("정보 수정 완료 !");
+            window.location.replace(`/member/${memberId}`);
+        }).fail(error => {
+            console.log("실패", error);
+        });
+    }
 }
