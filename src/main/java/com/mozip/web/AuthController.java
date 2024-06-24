@@ -4,15 +4,21 @@ import com.mozip.domain.member.Member;
 import com.mozip.dto.req.FindEmailDto;
 import com.mozip.dto.req.LoginDto;
 import com.mozip.dto.req.JoinMemberDto;
+import com.mozip.handler.ex.CustomValidationException;
 import com.mozip.service.AuthService;
 import com.mozip.util.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -45,7 +51,7 @@ public class AuthController {
 
     // 회원가입 처리
     @PostMapping("/auth/join")
-    public String join(@ModelAttribute JoinMemberDto joinMemberDto) {
+    public String join(@Valid @ModelAttribute JoinMemberDto joinMemberDto, BindingResult bindingResult) {
         authService.joinUser(joinMemberDto);
         return "redirect:/auth/login";
     }
@@ -58,8 +64,10 @@ public class AuthController {
 
     // login 처리
     @PostMapping("/auth/login")
-    public String login(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletRequest req) {
-        Member loginMember = authService.login(new LoginDto(email, password));
+    public String login(@Valid @ModelAttribute LoginDto dto,
+                        BindingResult bindingResult,
+                        HttpServletRequest req) {
+        Member loginMember = authService.login(dto);
         if (loginMember != null) {
             HttpSession session = req.getSession();
             session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
@@ -80,11 +88,10 @@ public class AuthController {
     // 아이디 찾기
     @PostMapping("/auth/findId")
     @ResponseBody
-    public String findId(@RequestParam("username") String username, @RequestParam("phone") String phone, HttpServletRequest request) {
-        log.info("findId 요청: username={}, phone={}", username, phone);
-        FindEmailDto findEmailDto = new FindEmailDto(username, phone);
+    public String findId(@Valid @ModelAttribute FindEmailDto findEmailDto,
+                         BindingResult bindingResult) {
+
         String email = authService.findMemberEmail(findEmailDto);
-        log.info("findId 결과: email={}", email != null ? email : "일치하는 정보가 없습니다.");
 
         if (email != null) {
             return "<script>alert('찾으시는 이메일은 " + email + " 입니다.'); window.location='/auth/login';</script>";
