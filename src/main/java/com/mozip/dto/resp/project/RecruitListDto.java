@@ -1,10 +1,8 @@
-package com.mozip.dto.resp;
+package com.mozip.dto.resp.project;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.NClob;
-import java.sql.Timestamp;
 import java.util.List;
 
 @NoArgsConstructor

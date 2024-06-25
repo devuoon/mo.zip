@@ -1,24 +1,17 @@
 package com.mozip.web;
 
 import com.mozip.config.auth.PrincipalDetails;
-import com.mozip.domain.member.Member;
 
-import com.mozip.dto.resp.ProjectDetailDto;
-import com.mozip.dto.resp.ProjectMemberDto;
-import com.mozip.dto.resp.ShowEditDto;
+import com.mozip.dto.resp.project.ShowEditDto;
 import com.mozip.handler.ex.CustomException;
 import com.mozip.service.KeepService;
 import com.mozip.service.MemberService;
 import com.mozip.service.ProjectService;
-import com.mozip.util.SessionConst;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Project 테이블과 관련된 URL매핑(recruit_create,detail,list / show_crate,detail,list)

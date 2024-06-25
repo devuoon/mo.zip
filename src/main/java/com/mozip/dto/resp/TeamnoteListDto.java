@@ -1,7 +1,7 @@
 package com.mozip.dto.resp;
-// 데이터를 주고받을때 필요한 역할(잠깐 데이터가 머물러 감)
 import lombok.Data;
 
+// TODO : 추후 기능 수정
 @Data
 public class TeamnoteListDto {
     private int id;

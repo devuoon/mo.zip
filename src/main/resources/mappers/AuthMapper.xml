@@ -49,7 +49,7 @@
         VALUES (#{projectId}, #{memberId})
     </insert>
     <!--이메일 찾기-->
-    <select id="findMemberEmail" parameterType="com.mozip.dto.req.FindEmailDto" resultType="java.lang.String">
+    <select id="findMemberEmail" parameterType="com.mozip.dto.req.project.FindEmailDto" resultType="java.lang.String">
         SELECT EMAIL
         FROM MEMBER
         WHERE USERNAME = #{username} AND PHONE = #{phone}

@@ -1,9 +1,8 @@
 package com.mozip.domain.member;
 
-import com.mozip.dto.req.FindEmailDto;
-import com.mozip.dto.req.JoinMemberDto;
+import com.mozip.dto.req.project.FindEmailDto;
+import com.mozip.dto.req.member.JoinMemberDto;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 
 import java.util.Optional;
 

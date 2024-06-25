@@ -1,8 +1,7 @@
-package com.mozip.dto.resp;
+package com.mozip.dto.resp.project;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data

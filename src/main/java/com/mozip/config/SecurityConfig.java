@@ -1,7 +1,6 @@
 package com.mozip.config;
 
 import com.mozip.config.auth.PrincipalOauth2UserService;
-import com.mozip.handler.ex.CustomException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,11 +37,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(auth -> auth.
-                        requestMatchers("/auth/login", "/auth/join", "/", "/project/show", "/member/**",
-                                "/project", "/project/*", "/css/**", "/js/**", "/img/**").permitAll().
-                        requestMatchers("/member/edit/**", "/project/create").authenticated().
-                        anyRequest().authenticated())
+        http.
+                authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/auth/join", "/", "/project/show", "/member/**",
+                                                                "/project", "/project/*", "/css/**", "/js/**", "/img/**").permitAll().
+                                                requestMatchers("/member/edit/**", "/project/create").authenticated().
+                                                anyRequest().authenticated())
                 .csrf(config -> config.disable())
                 .formLogin(config -> config.
                         loginPage("/auth/login").

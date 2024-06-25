@@ -3,7 +3,7 @@ package com.mozip.config.auth;
 import com.mozip.domain.member.AuthRepository;
 import com.mozip.domain.member.Member;
 import com.mozip.domain.member.Role;
-import com.mozip.dto.req.JoinMemberDto;
+import com.mozip.dto.req.member.JoinMemberDto;
 import com.mozip.handler.ex.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

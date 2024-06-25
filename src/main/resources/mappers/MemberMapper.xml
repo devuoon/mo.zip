@@ -4,7 +4,7 @@
 
 <mapper namespace="com.mozip.domain.member.MemberRepository">
     <!-- 사용자 기본 정보 가져오기 -->
-    <resultMap id="mypageDtoMap" type="com.mozip.dto.resp.MypageDto">
+    <resultMap id="mypageDtoMap" type="com.mozip.dto.resp.member.MypageDto">
         <result property="id" column="ID"/>
         <result property="name" column="USERNAME"/>
         <result property="career" column="CAREER"/>
@@ -14,7 +14,7 @@
         <result property="githubLink" column="GITHUB_LINK"/>
     </resultMap>
 
-    <resultMap id="bookmarkListDtoMap" type="com.mozip.dto.resp.MyBookmarkListDto">
+    <resultMap id="bookmarkListDtoMap" type="com.mozip.dto.resp.member.MyBookmarkListDto">
         <result property="id" column="ID"/>
         <result property="projectName" column="PROJECT_NAME"/>
         <result property="projectType" column="PROJECT_TYPE"/>
@@ -23,7 +23,7 @@
         <result property="createdAt" column="CREATED_AT"/>
     </resultMap>
 
-    <resultMap id="myProjectDtoMap" type="com.mozip.dto.resp.MyProjectDto">
+    <resultMap id="myProjectDtoMap" type="com.mozip.dto.resp.member.MyProjectDto">
         <result property="id" column="ID"/>
         <result property="projectName" column="PROJECT_NAME"/>
         <result property="projectType" column="PROJECT_TYPE"/>
@@ -32,7 +32,7 @@
         <result property="createdAt" column="CREATED_AT"/>
     </resultMap>
 
-    <select id="newMemberList" resultType="com.mozip.dto.resp.NewMemberListDto">
+    <select id="newMemberList" resultType="com.mozip.dto.resp.member.NewMemberListDto">
         <![CDATA[
         SELECT ID, USERNAME, POSITION, INFO, PROFILE_IMAGE_URL
         FROM MEMBER
@@ -75,7 +75,7 @@
     </select>
 
     <!-- 마이페이지 수정 -->
-    <resultMap id="editUserInfoDtoMap" type="com.mozip.dto.req.MypageEditDto">
+    <resultMap id="editUserInfoDtoMap" type="com.mozip.dto.req.member.MypageEditDto">
         <result property="id" column="ID"/>
         <result property="email" column="EMAIL"/>
         <result property="username" column="USERNAME"/>
@@ -106,7 +106,7 @@
     </select>
 
     <!-- 멤버 정보를 업데이트하는 쿼리 -->
-    <update id="updateInfo" parameterType="com.mozip.dto.req.UpdateMypageEditDto">
+    <update id="updateInfo" parameterType="com.mozip.dto.req.member.UpdateMypageEditDto">
         UPDATE MEMBER
         SET EMAIL       = #{email},
             CAREER      = #{career},

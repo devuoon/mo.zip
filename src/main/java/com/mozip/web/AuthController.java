@@ -1,26 +1,15 @@
 package com.mozip.web;
 
-import com.mozip.domain.member.Member;
-import com.mozip.dto.req.FindEmailDto;
-import com.mozip.dto.req.LoginDto;
-import com.mozip.dto.req.JoinMemberDto;
-import com.mozip.handler.ex.CustomValidationException;
+import com.mozip.dto.req.project.FindEmailDto;
+import com.mozip.dto.req.member.JoinMemberDto;
 import com.mozip.service.AuthService;
-import com.mozip.util.SessionConst;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * 로그인, 회원가입, 아이디찾기, 비밀번호 찾기 URL 이 해당 컨트롤러로 옴
@@ -67,7 +56,7 @@ public class AuthController {
 
 
 
-    // 아이디 찾기
+    // TODO : 아이디 찾기 로직 수정해라 김동건;;
     @PostMapping("/auth/findId")
     @ResponseBody
     public String findId(@Valid @ModelAttribute FindEmailDto findEmailDto,

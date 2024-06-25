@@ -1,8 +1,7 @@
-package com.mozip.dto.resp;
+package com.mozip.dto.resp.project;
 
 import lombok.Data;
 
-import java.sql.NClob;
 import java.util.List;
 
 @Data

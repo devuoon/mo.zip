@@ -1,10 +1,9 @@
-package com.mozip.dto.resp;
+package com.mozip.dto.resp.project;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data

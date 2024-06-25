@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class TeamService {
-
+    // TODO : 추후 구현기능이 수정.
     private final TeamnoteRepository teamnoteRepository;
 
     public List<TeamnoteListDto> findTeamNoteList(int memberId) {

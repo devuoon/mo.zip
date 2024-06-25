@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mozip.domain.project.ProjectRepository">
-    <resultMap id="projectDtoMap" type="com.mozip.dto.resp.ProjectListDto">
+    <resultMap id="projectDtoMap" type="com.mozip.dto.resp.project.ProjectListDto">
         <result property="id" column="ID"/>
         <result property="projectName" column="PROJECT_NAME"/>
         <result property="projectType" column="PROJECT_TYPE"/>
@@ -11,7 +11,7 @@
         <result property="views" column="VIEWS"/>
     </resultMap>
 
-    <resultMap id="recruitDtoMap" type="com.mozip.dto.resp.RecruitListDto">
+    <resultMap id="recruitDtoMap" type="com.mozip.dto.resp.project.RecruitListDto">
         <result property="id" column="ID"/>
         <result property="projectName" column="PROJECT_NAME"/>
         <result property="projectType" column="PROJECT_TYPE"/>
@@ -21,7 +21,7 @@
         <result property="createTime" column="CREATED_AT"/>
     </resultMap>
 
-    <resultMap id="ShowListDtoMap" type="com.mozip.dto.resp.ShowListDto">
+    <resultMap id="ShowListDtoMap" type="com.mozip.dto.resp.project.ShowListDto">
         <result property="id" column="ID"/>
         <result property="projectName" column="PROJECT_NAME"/>
         <result property="projectType" column="PROJECT_TYPE"/>
@@ -29,7 +29,7 @@
         <result property="isShow" column="IS_SHOW"/>
     </resultMap>
 
-    <resultMap id="projectDetailMap" type="com.mozip.dto.resp.ProjectDetailDto">
+    <resultMap id="projectDetailMap" type="com.mozip.dto.resp.project.ProjectDetailDto">
         <result property="id" column="ID"/>
         <result property="projectType" column="PROJECT_TYPE"/>
         <result property="status" column="STATUS"/>
@@ -159,7 +159,7 @@
                      WHERE PROJECT.ID = #{projectId})
     </select>
 
-    <select id="findOwnerInfo" resultType="com.mozip.dto.resp.ProjectMemberDto">
+    <select id="findOwnerInfo" resultType="com.mozip.dto.resp.project.ProjectMemberDto">
         SELECT ID,
                USERNAME,
                IFNULL(POSITION, '수정필요!'),
@@ -185,7 +185,7 @@
         WHERE P.ID = #{projectId}
     </select>
 
-    <select id="findProjectMembers" resultType="com.mozip.dto.resp.ProjectMemberDto">
+    <select id="findProjectMembers" resultType="com.mozip.dto.resp.project.ProjectMemberDto">
         SELECT SUB.MEMBER_ID, USERNAME, IFNULL(M.POSITION, '수정필요!') AS POSITION, IFNULL(M.CAREER, 0) AS CAREER, M.PROFILE_IMAGE_URL, SUB.STIME
         FROM (SELECT SUBSCRIBE.MEMBER_ID, SUBSCRIBE.CREATED_AT AS STIME
               FROM SUBSCRIBE
@@ -196,7 +196,7 @@
 
 
     <!-- 프로젝트 자랑 상세페이지(show_detail) -->
-    <resultMap id="ShowDetailDtoMap" type="com.mozip.dto.resp.ShowDetailDto">
+    <resultMap id="ShowDetailDtoMap" type="com.mozip.dto.resp.project.ShowDetailDto">
         <result property="id" column="ID"/>
         <result property="projectType" column="PROJECT_TYPE"/>
         <result property="projectName" column="PROJECT_NAME"/>
@@ -249,7 +249,7 @@
     </select>
 
     <!-- 작성자 프로필 정보 가져오기 / !! 프로필 url 추가 해야함 !! -->
-    <select id="findShowOwnerInfo" resultType="com.mozip.dto.resp.ProjectMemberDto">
+    <select id="findShowOwnerInfo" resultType="com.mozip.dto.resp.project.ProjectMemberDto">
         SELECT P.ID, USERNAME, POSITION, CAREER, M.PROFILE_IMAGE_URL, M.CREATED_AT
         FROM MEMBER M
                  INNER JOIN PROJECT P ON M.ID = P.OWNER_ID
@@ -273,7 +273,7 @@
         WHERE P.ID = #{projectId}
     </select>
 
-    <insert id="createProject" parameterType="com.mozip.dto.req.ProjectCreateDto">
+    <insert id="createProject" parameterType="com.mozip.dto.req.project.ProjectCreateDto">
         INSERT INTO PROJECT (PROJECT_NAME, PROJECT_TYPE, SUBJECT,
                              RECRUIT_COUNT, PROJECT_PURPOSE, PROJECT_TIME,
                              PROJECT_PROCESS, EXCEPT_DATE, EXCEPT_TIME, OWNER_ID, PROJECT_INFO, STATUS, CREATED_AT,
@@ -319,7 +319,7 @@
     </delete>
 
     <!-- 프로젝트자랑 수정 : 기존 데이터 갖고오기 -->
-    <select id="editSelectShow" resultType="com.mozip.dto.resp.ShowEditDto">
+    <select id="editSelectShow" resultType="com.mozip.dto.resp.project.ShowEditDto">
         SELECT ID,
                PROJECT_TYPE,
                PROJECT_NAME,
@@ -335,7 +335,7 @@
     </select>
 
     <!-- 프로젝트자랑 수정 : 프로젝트 데이터 수정 -->
-    <update id="updateShow" parameterType="com.mozip.dto.resp.ShowEditDto">
+    <update id="updateShow" parameterType="com.mozip.dto.resp.project.ShowEditDto">
         UPDATE PROJECT
         SET PROJECT_TYPE    = #{dto.projectType},
             PROJECT_NAME    = #{dto.projectName},
@@ -378,7 +378,7 @@
     </select>
 
     <!-- 프로젝트모집 수정 : 기존 데이터 갖고오기 -->
-    <select id="findProjectEditDetail" resultType="com.mozip.dto.resp.ProjectEditDto">
+    <select id="findProjectEditDetail" resultType="com.mozip.dto.resp.project.ProjectEditDto">
         SELECT ID,
                PROJECT_TYPE,
                PROJECT_NAME,
@@ -395,7 +395,7 @@
     </select>
 
     <!-- 프로젝트모집 수정 : 프로젝트 데이터 수정 -->
-    <update id="updateRecruitProject" parameterType="com.mozip.dto.resp.ProjectEditDto">
+    <update id="updateRecruitProject" parameterType="com.mozip.dto.resp.project.ProjectEditDto">
         UPDATE PROJECT
         SET PROJECT_TYPE    = #{dto.projectType},
             PROJECT_NAME    = #{dto.projectName},
@@ -443,7 +443,7 @@
     </insert>
 
     <!-- 프로젝트모집 프로젝트 신청 멤버 가져오기 -->
-    <select id="findOneJoinMember" resultType="com.mozip.dto.resp.ProjectMemberDto">
+    <select id="findOneJoinMember" resultType="com.mozip.dto.resp.project.ProjectMemberDto">
         SELECT M.ID, M.USERNAME, M.POSITION, M.CAREER, M.PROFILE_IMAGE_URL, M.CREATED_AT
         FROM SUBSCRIBE S
                  INNER JOIN MEMBER M ON S.MEMBER_ID = M.ID

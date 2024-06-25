@@ -1,29 +1,17 @@
 package com.mozip.web.api;
 
 import com.mozip.config.auth.PrincipalDetails;
-import com.mozip.domain.member.Member;
 import com.mozip.dto.CMRespDto;
-import com.mozip.dto.req.UpdateMypageEditDto;
-import com.mozip.handler.ex.CustomValidationApiException;
+import com.mozip.dto.req.member.UpdateMypageEditDto;
 import com.mozip.handler.ex.CustomValidationException;
-import com.mozip.service.AuthService;
 import com.mozip.service.MemberService;
-import com.mozip.util.SessionConst;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
