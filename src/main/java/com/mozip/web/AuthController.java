@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -51,10 +52,12 @@ public class AuthController {
 
     // 회원가입 처리
     @PostMapping("/auth/join")
-    public String join(@Valid @ModelAttribute JoinMemberDto joinMemberDto, BindingResult bindingResult) {
-        authService.joinUser(joinMemberDto);
-        return "redirect:/auth/login";
+    public ResponseEntity<?> join(@Valid @RequestBody JoinMemberDto joinMemberDto, BindingResult bindingResult) {
+            authService.joinUser(joinMemberDto);
+            return ResponseEntity.ok().body("{\"success\":true}");
+
     }
+
 
     // login 페이지
     @GetMapping("/auth/login")
