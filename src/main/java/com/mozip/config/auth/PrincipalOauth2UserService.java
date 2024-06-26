@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -23,13 +24,17 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        // 비밀번호 암호화 객체
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        OAuth2User oAuth2User = super.loadUser(userRequest);
-        Object attributes = oAuth2User.getAttributes().get("properties");
-        Map<String, Object> properties = (Map<String, Object>) attributes;
 
+        // 카카오 이메일 중복방지를 위한 랜덤문자열
+        UUID uuid = UUID.randomUUID();
 
-        String email = properties.get("nickname") + "@kakao.com";
+        // 카카오 API 로 받은 사용자 정보(닉네임, 프로필이미지)
+        Map<String, Object> properties = (Map<String, Object>) super.loadUser(userRequest).getAttributes().get("properties");
+
+        // 임의로 이메일 생성
+        String email = properties.get("nickname") + "_" + uuid + "@kakao.com";
 
         if (authRepository.findByEmail(email) != null) { // 이전에 가입 했던 유저
             Member member = authRepository.findMember(email).orElseThrow(() -> {
