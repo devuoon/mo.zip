@@ -27,14 +27,17 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         // 비밀번호 암호화 객체
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        // 카카오 이메일 중복방지를 위한 랜덤문자열
-        UUID uuid = UUID.randomUUID();
+        Map<String, Object> attributes = super.loadUser(userRequest).getAttributes();
+        System.out.println("attributes = " + attributes);
 
         // 카카오 API 로 받은 사용자 정보(닉네임, 프로필이미지)
         Map<String, Object> properties = (Map<String, Object>) super.loadUser(userRequest).getAttributes().get("properties");
+        // 카카오 API 로 받은 사용자 정보(이메일)
+        Map<String, Object> account = (Map<String, Object>) super.loadUser(userRequest).getAttributes().get("kakao_account");
+
 
         // 임의로 이메일 생성
-        String email = properties.get("nickname") + "_" + uuid + "@kakao.com";
+        String email = account.get("email").toString();
 
         if (authRepository.findByEmail(email) != null) { // 이전에 가입 했던 유저
             Member member = authRepository.findMember(email).orElseThrow(() -> {
