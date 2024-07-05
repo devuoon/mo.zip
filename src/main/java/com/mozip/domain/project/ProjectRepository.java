@@ -1,6 +1,8 @@
 package com.mozip.domain.project;
 
 import com.mozip.dto.req.project.ProjectCreateDto;
+import com.mozip.dto.req.project.ProjectEditDto;
+import com.mozip.dto.req.project.ShowEditDto;
 import com.mozip.dto.resp.project.*;
 import org.apache.ibatis.annotations.Param;
 

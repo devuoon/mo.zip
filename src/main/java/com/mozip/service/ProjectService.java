@@ -2,6 +2,8 @@ package com.mozip.service;
 
 import com.mozip.domain.project.ProjectRepository;
 import com.mozip.dto.req.project.ProjectCreateDto;
+import com.mozip.dto.req.project.ProjectEditDto;
+import com.mozip.dto.req.project.ShowEditDto;
 import com.mozip.dto.resp.project.*;
 import com.mozip.handler.ex.CustomException;
 import com.mozip.util.Util;
@@ -336,9 +338,9 @@ public class ProjectService {
         ProjectEditDto project = projectRepository.findProjectEditDetail(projectId);
         project.setSkills(projectRepository.findProjectSkills(projectId));
         project.setRecruitRole(projectRepository.findRecruitRoles(projectId));
-        project.setProjectInfo(project.getProjectInfo());
+//        project.setProjectInfo(project.getProjectInfo());
         // LocalDateTime -> String 변환
-        project.setExceptChangeTime(Util.formatLocalDateTime(project.getExceptTime()));
+        project.setExceptChangeTime(Util.formatTimestamp(project.getExceptTime()));
 
         return project;
     }
@@ -350,7 +352,11 @@ public class ProjectService {
      */
     @Transactional
     public void updateRecruitProject(ProjectEditDto dto) {
-        dto.setExceptTime(Util.stringToLocalDateTime(dto.getExceptChangeTime()));
+        try {
+            dto.setExceptTime(Util.stringToTimestamp(dto.getExceptChangeTime()));
+        } catch (ParseException e) {
+            throw new CustomException(e.getMessage());
+        }
 
         projectRepository.updateRecruitProject(dto);
 

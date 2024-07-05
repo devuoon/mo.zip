@@ -1,4 +1,4 @@
-package com.mozip.dto.resp.project;
+package com.mozip.dto.req.project;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

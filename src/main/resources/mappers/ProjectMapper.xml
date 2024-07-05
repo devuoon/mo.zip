@@ -316,7 +316,7 @@
     </delete>
 
     <!-- 프로젝트자랑 수정 : 기존 데이터 갖고오기 -->
-    <select id="editSelectShow" resultType="com.mozip.dto.resp.project.ShowEditDto">
+    <select id="editSelectShow" resultType="com.mozip.dto.req.project.ShowEditDto">
         SELECT ID,
                PROJECT_TYPE,
                PROJECT_NAME,
@@ -332,7 +332,7 @@
     </select>
 
     <!-- 프로젝트자랑 수정 : 프로젝트 데이터 수정 -->
-    <update id="updateShow" parameterType="com.mozip.dto.resp.project.ShowEditDto">
+    <update id="updateShow" parameterType="com.mozip.dto.req.project.ShowEditDto">
         UPDATE PROJECT
         SET PROJECT_TYPE    = #{dto.projectType},
             PROJECT_NAME    = #{dto.projectName},
@@ -375,11 +375,11 @@
     </select>
 
     <!-- 프로젝트모집 수정 : 기존 데이터 갖고오기 -->
-    <select id="findProjectEditDetail" resultType="com.mozip.dto.resp.project.ProjectEditDto">
+    <select id="findProjectEditDetail" resultMap="projectOrigin">
         SELECT ID,
+               SUBJECT,
                PROJECT_TYPE,
                PROJECT_NAME,
-               SUBJECT,
                RECRUIT_COUNT,
                PROJECT_PURPOSE,
                PROJECT_TIME,
@@ -391,8 +391,22 @@
         WHERE ID = #{projectId}
     </select>
 
+    <resultMap id="projectOrigin" type="com.mozip.dto.req.project.ProjectEditDto">
+        <result property="id" column="ID"/>
+        <result property="subject" column="SUBJECT"/>
+        <result property="projectType" column="PROJECT_TYPE"/>
+        <result property="projectName" column="PROJECT_NAME"/>
+        <result property="recruitCount" column="RECRUIT_COUNT"/>
+        <result property="projectPurpose" column="PROJECT_PURPOSE"/>
+        <result property="projectTime" column="PROJECT_TIME"/>
+        <result property="projectProcess" column="PROJECT_PROCESS"/>
+        <result property="exceptDate" column="EXCEPT_DATE"/>
+        <result property="exceptTime" column="EXCEPT_TIME"/>
+        <result property="projectInfo" column="PROJECT_INFO"/>
+    </resultMap>
+
     <!-- 프로젝트모집 수정 : 프로젝트 데이터 수정 -->
-    <update id="updateRecruitProject" parameterType="com.mozip.dto.resp.project.ProjectEditDto">
+    <update id="updateRecruitProject" parameterType="com.mozip.dto.req.project.ProjectEditDto">
         UPDATE PROJECT
         SET PROJECT_TYPE    = #{dto.projectType},
             PROJECT_NAME    = #{dto.projectName},
