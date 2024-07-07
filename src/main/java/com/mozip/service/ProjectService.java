@@ -417,9 +417,24 @@ public class ProjectService {
     }
 
     /**
+     * <h3>프로젝트자랑 검색 메서드</h3>
+     * <li>프로젝트자랑 목록 페이지에서 프로젝트를 검색하는 메서드</li>
+     * @param
+     * @return List<ShowListDto>
+     */
+    public List<ShowListDto> searchShow(String keyword) {
+        List<ShowListDto> showListDtos = projectRepository.searchShow(keyword);
+        for (ShowListDto showListDto : showListDtos) {
+            showListDto.setLikes(projectRepository.findLikeCount(showListDto.getId()));
+            showListDto.setSkills(projectRepository.findProjectSkills(showListDto.getId()));
+        }
+        return showListDtos;
+    }
+
+    /**
      * <h3>프로젝트모집 카테고리 필터 메서드</h3>
      * <li>프론트,백엔드,디자이너 등등 카테고리에 따른 필터된 데이터를 갖고오는 메서드이다.</li>
-     * @param filter
+     * @param
      * @return List<RecruitListDto>
      */
     public List<RecruitListDto> projectFilterSearch(String filter) {

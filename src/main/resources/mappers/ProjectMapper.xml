@@ -30,6 +30,13 @@
         <result property="imageUrl" column="IMAGE_URL"/>
     </resultMap>
 
+    <resultMap id="ShowDtoMap" type="com.mozip.dto.resp.project.ShowListDto">
+        <result property="id" column="ID"/>
+        <result property="projectName" column="PROJECT_NAME"/>
+        <result property="projectType" column="PROJECT_TYPE"/>
+        <result property="views" column="VIEWS"/>
+    </resultMap>
+
     <resultMap id="projectDetailMap" type="com.mozip.dto.resp.project.ProjectDetailDto">
         <result property="id" column="ID"/>
         <result property="projectType" column="PROJECT_TYPE"/>
@@ -498,6 +505,16 @@
         FROM PROJECT P
         WHERE P.PROJECT_NAME LIKE CONCAT('%', #{keyword}, '%')
            OR P.PROJECT_INFO LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY CREATED_AT DESC
+    </select>
+
+    <!--  프로젝트자랑리스트 검색하기  -->
+    <select id="searchShow" resultMap="ShowListDtoMap">
+        SELECT P.ID, P.PROJECT_NAME, P.PROJECT_TYPE,
+               P.VIEWS, P.IS_SHOW,P.IMAGE_URL
+        FROM PROJECT P
+        WHERE P.PROJECT_NAME LIKE CONCAT('%', #{keyword}, '%')
+        AND  IS_SHOW = 0
         ORDER BY CREATED_AT DESC
     </select>
 
