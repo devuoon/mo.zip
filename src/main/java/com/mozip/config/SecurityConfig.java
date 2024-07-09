@@ -43,7 +43,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.
-                authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/auth/join", "/", "/project/show", "/member/**",
+                authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/auth/join","/auth/findId","/auth/findPw", "/", "/project/show", "/member/**",
                                                                 "/api/**", "/project", "/project/**", "/css/**", "/js/**", "/img/**", "/upload/**").permitAll().
                                                 requestMatchers("/member/edit/**", "/project/create", "/member/projectList/**").authenticated().
                                                 anyRequest().authenticated())
