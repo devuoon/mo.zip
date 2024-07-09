@@ -90,11 +90,6 @@
   </div>
   <div class="show-top">
     <div class="show-flex">
-      <ul class="type-slt">
-        <li><a href="">전체</a></li>
-        <li class="on"><a href="">사이드 프로젝트</a></li>
-        <li><a href="">스터디/모임</a></li>
-      </ul>
       <!-- 로그인 유무 -->
       <th:block th:if="${#authentication.getPrincipal()!='anonymousUser'}">
         <a class="myproject-list" th:onclick="|myProjectList(${#authentication.getPrincipal().getMember().getId()})|">✏️ 프로젝트 자랑 하기</a>
@@ -296,7 +291,7 @@
             $('#showList').append(`
                         <a href="/project/show/${project.id}" class="show-box">
                             <div class="img-wrap">
-                                <img src="/img/showlist_sample.png" alt="프로필 이미지"/>
+                                <img src="/upload/${project.imageUrl}" alt="프로필 이미지"/>
                             </div>
                             <div class="box-text">
                                 <span class="pj-type ${project.projectType == '사이드 프로젝트' ? 'pj' : 'study'}">${project.projectType}</span>
@@ -425,7 +420,7 @@
           $('#showList').append(`
           <a href="/project/show/${project.id}" class="show-box">
             <div class="img-wrap">
-              <img src="/img/showlist_sample.png" alt="프로필 이미지"/>
+              <img src="/upload/${project.imageUrl}" alt="프로필 이미지"/>
             </div>
             <div class="box-text">
               <span class="pj-type ${project.projectType == '사이드 프로젝트' ? 'pj' : 'study'}">${project.projectType}</span>

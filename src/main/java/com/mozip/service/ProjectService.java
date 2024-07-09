@@ -525,12 +525,11 @@ public class ProjectService {
             // 기본값 최신순으로 처리
             filteredList = projectRepository.newConditionSelect();
         }
-        System.out.println("=======================");
-        System.out.println("filter = " + filter);
+
         for (ShowListDto showListDto : filteredList) {
             System.out.println("showListDto = " + showListDto);
         }
-        System.out.println("=======================");
+
 
         for (ShowListDto show : filteredList) {
             show.setLikes(projectRepository.findLikeCount(show.getId()));

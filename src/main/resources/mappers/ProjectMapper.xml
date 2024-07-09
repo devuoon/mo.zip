@@ -562,7 +562,7 @@
     </update>
 
     <select id="projectSkillFilter" resultMap="ShowListDtoMap">
-        SELECT ID, PROJECT_NAME, PROJECT_TYPE, OWNER_ID ,VIEWS, IS_SHOW
+        SELECT ID, PROJECT_NAME, PROJECT_TYPE, OWNER_ID ,VIEWS, IS_SHOW,IMAGE_URL
         FROM PROJECT
         WHERE PROJECT.ID IN(SELECT PROJECT_ID FROM PROJECT_SKILL WHERE SKILL_NAME LIKE #{filter})
     </select>
@@ -573,7 +573,7 @@
                    P.PROJECT_TYPE,
                    P.VIEWS,
                    P.IS_SHOW,
-                   B.북마크_갯수
+                   P.IMAGE_URL
             FROM PROJECT P
                      INNER JOIN (
                 SELECT COUNT(*) AS 북마크_갯수, PROJECT_ID
@@ -588,7 +588,8 @@
                    PROJECT_NAME,
                    PROJECT_TYPE,
                    VIEWS,
-                   IS_SHOW
+                   IS_SHOW,
+                   IMAGE_URL
             FROM PROJECT
             WHERE IS_SHOW = 0 AND IS_END = 0 AND STATUS = 0
             ORDER BY CREATED_AT DESC
@@ -599,7 +600,8 @@
                    PROJECT_NAME,
                    PROJECT_TYPE,
                    VIEWS,
-                   IS_SHOW
+                   IS_SHOW,
+                   IMAGE_URL
             FROM PROJECT
             WHERE IS_SHOW = 0 AND IS_END = 0 AND STATUS = 0
             ORDER BY CREATED_AT
