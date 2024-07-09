@@ -498,4 +498,45 @@ public class ProjectService {
         }
         return recruitListDtos;
     }
+
+    // 프로젝트자랑 기술스택 필터
+    public List<ShowListDto> projectSkillFilter(String filter) {
+
+        List<ShowListDto> allShows = projectRepository.projectSkillFilter(filter);
+        for (ShowListDto show : allShows) {
+            show.setLikes(projectRepository.findLikeCount(show.getId()));
+            show.setSkills(projectRepository.findProjectSkills(show.getId()));
+        }
+        return allShows;
+    }
+
+    // 프로젝트자랑 셀렉트 필터(최신순)
+    public List<ShowListDto> selectConditionFilter(String filter) {
+
+        List<ShowListDto> filteredList;
+
+        if (filter.equals("old")) {
+            // 오래된순
+            filteredList = projectRepository.oldConditionSelect();
+        } else if (filter.equals("save")) {
+            // 북마크순
+            filteredList = projectRepository.saveConditionSelect();
+        } else {
+            // 기본값 최신순으로 처리
+            filteredList = projectRepository.newConditionSelect();
+        }
+        System.out.println("=======================");
+        System.out.println("filter = " + filter);
+        for (ShowListDto showListDto : filteredList) {
+            System.out.println("showListDto = " + showListDto);
+        }
+        System.out.println("=======================");
+
+        for (ShowListDto show : filteredList) {
+            show.setLikes(projectRepository.findLikeCount(show.getId()));
+            show.setSkills(projectRepository.findProjectSkills(show.getId()));
+        }
+        return filteredList;
+    }
+
 }
