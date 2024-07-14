@@ -15,9 +15,11 @@ function handleStackFilter(event) {
             console.log("성공", res);
             $('#showList').empty();
             if (res.data.length === 0) {
+                $('.search-null').remove();
                 $('.show-top').append('<p class="search-null">해당 조건에 맞는 프로젝트가 존재하지 않습니다. 다시 검색해주세요.</p>');
             } else {
                 res.data.forEach(project => {
+                    $('.search-null').remove();
                     let skillImages = '';
                     let count = 0;
                     project.skills.forEach(skill => {
