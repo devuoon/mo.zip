@@ -426,7 +426,7 @@
     search = $("#searchText").val();
 
     const apiURL =
-            `http://localhost:8082/job-search?keywords=${search}&loc_cd=${selectedLoc}&start=${filterPage}&count=10&job_mid_cd=2&job_cd=${selectedSkill}&fields=posting-date`
+            `http://52.78.114.31:8082/job-search?keywords=${search}&loc_cd=${selectedLoc}&start=${filterPage}&count=10&job_mid_cd=2&job_cd=${selectedSkill}&fields=posting-date`
 
     $.ajax({
       url: apiURL,
