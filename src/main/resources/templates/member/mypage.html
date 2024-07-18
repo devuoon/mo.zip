@@ -54,7 +54,7 @@
           <div class="skill-flex">
             <i class="fa-solid fa-book-bookmark"></i>
             <div class="tags skills">
-              <span class="work" th:if="${member.position == '풀스텍'}">풀스택</span>
+              <span class="work" th:if="${member.position == '풀스택'}">풀스택</span>
               <span class="work" th:if="${member.position == '프론트엔드'}">프론트엔드</span>
               <span class="work" th:if="${member.position == '백엔드'}">백엔드</span>
               <span class="work" th:if="${member.position == '디자이너'}">디자이너</span>
@@ -101,7 +101,7 @@
             <option value="0">모집완료</option>
           </select>
         </div>
-        <div class="notproject" style="display: none;">
+        <div class="notbookmark" th:if="${member.getBookmarks().size()==0}">
           <p><i class="fa-solid fa-circle-exclamation"></i> 북마크한 프로젝트가 아직 없습니다</p>
         </div>
         <div class="lists">
