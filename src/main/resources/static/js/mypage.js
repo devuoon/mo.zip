@@ -1,5 +1,6 @@
 // 필터링 함수
 function filterProjects(filterValue) {
+    $(".notbookmark").remove();
     const projects = document.querySelectorAll('.pj-content.bookmark');
     let visibleCount = 0; // 표시되는 프로젝트의 수
 
