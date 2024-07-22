@@ -83,7 +83,7 @@ public interface ProjectRepository {
     List<String> findShowSkills(@Param("projectId") int projectId);
 
     // 프로젝트 모집분야
-    List<String> findShowRecruitRoles(@Param("projectId") int projectId);
+    String findShowRecruitRoles(@Param("projectId") int projectId);
 
     // 프로젝트작성페이지
     void createProject(@Param("dto") ProjectCreateDto dto, @Param("img") String img);

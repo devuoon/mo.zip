@@ -645,7 +645,8 @@
     <update id="updateProjectToShow">
         UPDATE PROJECT
         SET GITHUB_LINK = #{dto.githubUrl},
-            IS_SHOW     = 0
+            IS_SHOW     = 0,
+            MODIFIED_SHOW = now()
         WHERE ID = #{dto.projectId}
     </update>
 </mapper>

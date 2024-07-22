@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class ProjectService {
      * <h3>메인페이지 - 새로운모집글 데이터 갖고오는 메서드</h3>
      * <li>새로운 모집글 상위 6개를 갖고와서 반환</li>
      * <li>프로젝트의 몇몇 정보는 다른 테이블과 조인이 필요하므로 for 문을 통해 데이터를 셋팅한다.</li>
+     *
      * @return List<ProjectListDto>
      */
     public List<ProjectListDto> findNewProject() {
@@ -47,6 +49,7 @@ public class ProjectService {
      * <h3>메인페이지 - 인기모집글 데이터 갖고오는 메서드</h3>
      * <li>프로젝트 중 조회수가 가장 많은 상위 6개의 데이터를 가져온다.</li>
      * <li>findNewProject() 와 거의 똑같은 로직</li>
+     *
      * @return List<ProjectListDto>
      */
     public List<ProjectListDto> findHotProject() {
@@ -63,6 +66,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트모집 상세페이지 데이터 갖고오는 메서드</h3>
      * <li>프로젝트 ID를 통해 상세페이지에 뿌려줄 데이터를 셋팅한다.</li>
+     *
      * @param projectId
      * @return ProjectDetailDto
      */
@@ -106,6 +110,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트모집 목록 페이지 데이터 갖고오는 메서드</h3>
      * <li>목록 페이지에 뿌려줄 데이터들을 셋팅</li>
+     *
      * @return List<RecruitListDto>
      */
     public List<RecruitListDto> findAllProject(int page) {
@@ -122,6 +127,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트자랑 목록 페이지 데이터 갖고오는 메서드</h3>
      * <li>프로젝트 중 프로젝트 자랑인 데이터만 셋팅하여 갖고온다.</li>
+     *
      * @return List<ShowListDto>
      */
     public List<ShowListDto> findAllShowProject() {
@@ -136,6 +142,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트자랑 목록 인기 프로젝트 갖고오는 메서드</h3>
      * <li>프로젝트중 프로젝트자랑인 데이터를 상위 6개 갖고온다.</li>
+     *
      * @return List<ShowListDto>
      */
     public List<ShowListDto> findHotShow() {
@@ -150,6 +157,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트자랑 상세 데이터 갖고오는 메서드</h3>
      * <li>프로젝트ID값을 통해 상세페이지에 뿌려줄 데이터를 갖고온다.</li>
+     *
      * @param projectId
      * @return ShowDetailDto
      */
@@ -177,12 +185,16 @@ public class ProjectService {
         // 프로젝트 모집분야
         findShowDetail.setRecruitRoles(projectRepository.findShowRecruitRoles(projectId));
 
+        // 프로젝트 종료날짜
+        findShowDetail.setModifiedShow(Util.formatTimestamp(Timestamp.valueOf(findShowDetail.getModifiedShow())));
+
         return findShowDetail;
     }
 
     /**
      * <h3>프로젝트생성 메서드</h3>
      * <li>사용자로부터 입력받은 DTO를 통해 프로젝트를 생성한다.</li>
+     *
      * @param projectCreateDto
      * @return int
      */
@@ -197,10 +209,10 @@ public class ProjectService {
             throw new CustomException("프로젝트 명이 중복됩니다 !");
 
         // DB 실행
-        if(projectCreateDto.getProjectType().equals("사이드 프로젝트"))
+        if (projectCreateDto.getProjectType().equals("사이드 프로젝트"))
             projectRepository.createProject(projectCreateDto, "project_sample.png");
-        else if(projectCreateDto.getProjectType().equals("스터디/모임"))
-            projectRepository.createProject(projectCreateDto,"study_sample.png");
+        else if (projectCreateDto.getProjectType().equals("스터디/모임"))
+            projectRepository.createProject(projectCreateDto, "study_sample.png");
 
         // 1. DTO의 projectName으로 SELECT 쿼리를 날려서 해당 프로젝트 ID 값을 가져온다.
         String projectName = projectCreateDto.getProjectName();
@@ -213,16 +225,13 @@ public class ProjectService {
         }
 
         // 3. 프로젝트 ID값으로 모집역할 테이블 데이터 세팅
-        List<String> roles = projectCreateDto.getRecruitRole();
-        for (String role : roles) {
-            projectRepository.createRecruitRole(role, projectId);
-        }
+        projectRepository.createRecruitRole(projectCreateDto.getRecruitRole(), projectId);
 
         // 기본이미지 변경
-        if(projectCreateDto.getProjectType().equals("사이드 프로젝트"))
-            projectRepository.baseProjectImg(projectId,"project_sample.png");
+        if (projectCreateDto.getProjectType().equals("사이드 프로젝트"))
+            projectRepository.baseProjectImg(projectId, "project_sample.png");
         else
-            projectRepository.baseProjectImg(projectId,"study_sample.png");
+            projectRepository.baseProjectImg(projectId, "study_sample.png");
 
         // 4. 프로젝트 ID 값을 Controller에 반환
         return projectId;
@@ -231,6 +240,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트 조회수 증가 메서드</h3>
      * <li>프로젝트ID값을 통해 조회수를 증가시키는 메서드</li>
+     *
      * @param projectId
      * @return int
      */
@@ -243,6 +253,7 @@ public class ProjectService {
      * <h3>프로젝트 삭제 메서드</h3>
      * <li>프로젝트ID값을 통해 프로젝트를 삭제한다.</li>
      * <li>프로젝트 스킬,모집역할,북마크,좋아요,신청맴버,신청목록 삭제 추가</li>
+     *
      * @param projectId
      */
     @Transactional
@@ -259,6 +270,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트자랑 수정 전 기존 데이터 갖고오는 메서드</h3>
      * <li>프로젝트자랑 수정 페이지에서 해당 프로젝트의 기존 값들을 갖고온다.</li>
+     *
      * @param projectId
      * @return ShowEditDto
      */
@@ -276,6 +288,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트자랑 수정 메서드</h3>
      * <li>사용자로부터 입력받은 수정할 데이터와 프로젝트 ID를 통해 프로젝트를 수정한다.</li>
+     *
      * @param dto
      * @param projectId
      */
@@ -306,6 +319,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트 모집완료 메서드</h3>
      * <li>프로젝트ID값으로 모집완료인지 모집중인지 구분하여 로직 수행</li>
+     *
      * @param projectId
      * @return int
      */
@@ -327,6 +341,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트 수정 권한 체크 메서드</h3>
      * <li>해당 프로젝트의 작성자(ownerId)만 수정하게 권한을 체크하는 메서드</li>
+     *
      * @param projectId
      * @param memberid
      * @return boolean
@@ -341,6 +356,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트 수정 전 기존 데이터 갖고오는 메서드</h3>
      * <li>프로젝트ID를 통해 수정 전 기존 데이터를 갖고온다.</li>
+     *
      * @param projectId
      * @return ProjectEditDto
      */
@@ -358,6 +374,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트 수정 메서드</h3>
      * <li>사용자로부터 입력받은 프로젝트 수정 데이터로 프로젝트를 수정 </li>
+     *
      * @param dto
      */
     @Transactional
@@ -385,6 +402,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트 모집 신청 메서드</h3>
      * <li>해당 프로젝트의 참여인원으로 추가된다.</li>
+     *
      * @param memberId
      * @param projectId
      * @return ProjectMemberDto
@@ -403,6 +421,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트모집 검색 메서드</h3>
      * <li>프로젝트모집 목록 페이지에서 프로젝트를 검색하는 메서드</li>
+     *
      * @param keyword
      * @return List<RecruitListDto>
      */
@@ -420,6 +439,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트자랑 검색 메서드</h3>
      * <li>프로젝트자랑 목록 페이지에서 프로젝트를 검색하는 메서드</li>
+     *
      * @param
      * @return List<ShowListDto>
      */
@@ -435,6 +455,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트모집 카테고리 필터 메서드</h3>
      * <li>프론트,백엔드,디자이너 등등 카테고리에 따른 필터된 데이터를 갖고오는 메서드이다.</li>
+     *
      * @param
      * @return List<RecruitListDto>
      */
@@ -457,11 +478,12 @@ public class ProjectService {
     /**
      * <h3>프로젝트모집 셀렉트 필터</h3>
      * <li>모집중/모집완료 셀렉트 버튼에 따라 필터된 데이터를 갖고오는 메서드이다.</li>
+     *
      * @param filter
      * @return List<RecruitListDto>
      */
     public List<RecruitListDto> projectSelectFilterSearch(String filter, int page) {
-        List<Integer> projectFilterId = projectRepository.selectFilter(Integer.parseInt(filter),page);
+        List<Integer> projectFilterId = projectRepository.selectFilter(Integer.parseInt(filter), page);
         List<RecruitListDto> recruitListDtos = new ArrayList<>();
         for (Integer projectId : projectFilterId) {
             recruitListDtos.add(projectRepository.findOneRecruit(projectId));
@@ -478,6 +500,7 @@ public class ProjectService {
     /**
      * <h3>프로젝트 타입 필터 메서드</h3>
      * <li>프로젝트 타입(사이드프로젝트 or 스터디)에 따라 필터된 데이터를 갖고오는 메서드</li>
+     *
      * @param filter
      * @return List<RecruitListDto>
      */
@@ -542,7 +565,7 @@ public class ProjectService {
     @Transactional
     public void updateProjectToShow(ShowUpdateDto dto, int memberId) {
         // 로그인유저 프로젝트 작성자 체크
-        if(projectRepository.findProjectOwnerById(dto.getProjectId()) != memberId)
+        if (projectRepository.findProjectOwnerById(dto.getProjectId()) != memberId)
             throw new CustomException("수정 권한이 없습니다!!");
 
         // 업데이트
