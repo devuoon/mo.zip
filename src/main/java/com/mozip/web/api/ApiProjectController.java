@@ -1,9 +1,11 @@
 package com.mozip.web.api;
 
+import com.mozip.config.auth.PrincipalDetails;
 import com.mozip.domain.keep.Keep;
 import com.mozip.domain.likes.Likes;
 import com.mozip.dto.CMRespDto;
 import com.mozip.dto.req.project.ProjectCreateDto;
+import com.mozip.dto.req.project.ShowUpdateDto;
 import com.mozip.service.KeepService;
 import com.mozip.dto.req.project.ProjectEditDto;
 import com.mozip.dto.req.project.ShowEditDto;
@@ -13,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,8 +92,8 @@ public class ApiProjectController {
     // 멤버모집 리스트 검색
     @GetMapping("/project/search")
     @ResponseBody
-    public ResponseEntity<?> searchProject(@RequestParam("keyword") String keyword) {
-        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.searchProject(keyword)));
+    public ResponseEntity<?> searchProject(@RequestParam("keyword") String keyword, @RequestParam("page") int page) {
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.searchProject(keyword,page)));
     }
 
     // 프로젝트 자랑 검색
@@ -111,38 +114,45 @@ public class ApiProjectController {
 
     // 프로젝트모집 카테고리 필터
     @GetMapping("/project/{filter}")
-    public ResponseEntity<?> filterProject(@PathVariable("filter") String filter) {
-        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectFilterSearch(filter)));
+    public ResponseEntity<?> filterProject(@PathVariable("filter") String filter, @RequestParam("page") int page) {
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectFilterSearch(filter, page)));
     }
 
     // 프로젝트모집 셀렉트 필터
     @GetMapping("/project/select/{filter}")
-    public ResponseEntity<?> selectFilterProject(@PathVariable("filter") String filter) {
-        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectSelectFilterSearch(filter)));
+    public ResponseEntity<?> selectFilterProject(@PathVariable("filter") String filter, @RequestParam("page") int page) {
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectSelectFilterSearch(filter, page)));
     }
 
     // 프로젝트모집 타입 필터
     @GetMapping("/project/type/{filter}")
-    public ResponseEntity<?> selectProjectTypeFilter(@PathVariable("filter") String filter) {
-        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectSelectTypeFilter(filter)));
+    public ResponseEntity<?> selectProjectTypeFilter(@PathVariable("filter") String filter, @RequestParam("page") int page) {
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectSelectTypeFilter(filter, page)));
     }
 
     // 무한 스크롤
     @GetMapping("/project")
     public ResponseEntity<?> projectList(@RequestParam("page") int page) {
-        return ResponseEntity.ok().body(new CMRespDto<>(1,"통신성공",projectService.findAllProject(page)));
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.findAllProject(page)));
     }
 
     // 프로젝트자랑 기술스택 필터
     @GetMapping("/project/skill/{filter}")
-    public ResponseEntity<?> selectProjectSkill(@PathVariable("filter") String filter){
+    public ResponseEntity<?> selectProjectSkill(@PathVariable("filter") String filter) {
         return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.projectSkillFilter(filter)));
     }
 
     // 프로젝트자랑 셀렉트 필터(최신, 오래된, 북마크순)
     @GetMapping("/show/select/{filter}")
-    public ResponseEntity<?> selectFilterShow(@PathVariable("filter") String filter){
+    public ResponseEntity<?> selectFilterShow(@PathVariable("filter") String filter) {
         return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", projectService.selectConditionFilter(filter)));
+    }
+
+    // 프로젝트 모집->프로젝트 자랑 전환
+    @PatchMapping("/show/update")
+    public ResponseEntity<?> createShowProject(@RequestBody ShowUpdateDto dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        projectService.updateProjectToShow(dto, principalDetails.getMember().getId());
+        return ResponseEntity.ok().body(new CMRespDto<>(1, "통신성공", dto.getProjectId()));
     }
 
 }

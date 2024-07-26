@@ -52,5 +52,5 @@ public class ProjectCreateDto {
     private List<String> skills;
 
     @NotNull(message = "모집분야는 필수입니다!")
-    private List<String> recruitRole;
+    private String recruitRole;
 }

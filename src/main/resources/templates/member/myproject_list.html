@@ -84,8 +84,8 @@
   // 모달 데이터 전송
   document.querySelector('.submit-modal').addEventListener("click", function (event) {
     event.preventDefault();
-    let githubUrl = document.getElementById("github-url").value;
-    let projectId = document.querySelector(".project-id");
+    let githubUrl = document.querySelector("#github-url").value;
+    let projectId = document.querySelector(".project-id").textContent;
 
     let jsonData = {
       githubUrl: githubUrl,
@@ -103,7 +103,7 @@
       console.log("통신성공", res);
       alert("프로젝트 자랑이 정상적으로 등록되었습니다.");
       let projectId = res.data;
-      window.location.assign(`/show/${projectId}`);
+      window.location.assign(`/project/show/${projectId}`);
     }).fail(error => {
       console.log(error); // 에러 로그 출력
       let errors = error.responseJSON && error.responseJSON.data ? Object.values(error.responseJSON.data).join('\n') : '알 수 없는 오류가 발생했습니다.';

@@ -3,6 +3,7 @@ package com.mozip.domain.project;
 import com.mozip.dto.req.project.ProjectCreateDto;
 import com.mozip.dto.req.project.ProjectEditDto;
 import com.mozip.dto.req.project.ShowEditDto;
+import com.mozip.dto.req.project.ShowUpdateDto;
 import com.mozip.dto.resp.project.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -82,7 +83,7 @@ public interface ProjectRepository {
     List<String> findShowSkills(@Param("projectId") int projectId);
 
     // 프로젝트 모집분야
-    List<String> findShowRecruitRoles(@Param("projectId") int projectId);
+    String findShowRecruitRoles(@Param("projectId") int projectId);
 
     // 프로젝트작성페이지
     void createProject(@Param("dto") ProjectCreateDto dto, @Param("img") String img);
@@ -150,19 +151,19 @@ public interface ProjectRepository {
     ProjectMemberDto findOneJoinMember(@Param("memberId") int memberId, @Param("projectId") int projectId);
 
     // 멤버모집 : 검색
-    List<RecruitListDto> searchProject(@Param("keyword") String keyword);
+    List<RecruitListDto> searchProject(@Param("keyword") String keyword, @Param("page") int page);
 
     // 프로젝트모집 상세 : 프로젝트 참여자 ID값 데이터
     List<Integer> findProjectMemberIdList(@Param("projectId") int projectId);
 
     // 프로젝트모집 : 필터
-    List<Integer> filterSearch(@Param("filter") String filter);
+    List<Integer> filterSearch(@Param("filter") String filter, @Param("page") int page);
 
     // 프로젝트모집 : 셀렉트 필터
-    List<Integer> selectFilter(@Param("filter") Integer filter);
+    List<Integer> selectFilter(@Param("filter") Integer filter, @Param("page") int page);
 
     // 프로젝트모집 : 타입 필터
-    List<Integer> projectTypeFilter(@Param("filter") String filter);
+    List<Integer> projectTypeFilter(@Param("filter") String filter, @Param("page") int page);
 
     RecruitListDto findOneRecruit(@Param("projectId") int projectId);
 
@@ -177,11 +178,19 @@ public interface ProjectRepository {
 
     // 프로젝트자랑 리스트 : 셀렉트 필터(최신순, 오래된순, 북마크순)
     List<ShowListDto> newConditionSelect();
+
     List<ShowListDto> oldConditionSelect();
+
     List<ShowListDto> saveConditionSelect();
-  
+
     List<ShowListDto> findProjectListById(@Param("memberId") int memberId);
 
     // 회원탈퇴 : 작성 프로젝트 삭제
     void deleteByOwnerId(@Param("memberId") int memberId);
+
+    // 프로젝트 작성자 아이디
+    int findProjectOwnerById(@Param("projectId") int projectId);
+
+    // 프로젝트 모집 -> 프로젝트 자랑 전환
+    void updateProjectToShow(@Param("dto") ShowUpdateDto dto);
 }

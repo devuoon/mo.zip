@@ -117,10 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 jsonData.skills.push(skill.id);
             });
 
-            jsonData.recruitRole = [];
-            document.querySelectorAll(".selected-role").forEach((role) => {
-                jsonData.recruitRole.push(role.id);
-            });
+            jsonData.recruitRole = $("#role option:selected").val();
+
 
             jsonData.ownerId = ownerId;
 
