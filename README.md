@@ -230,5 +230,5 @@
 - AWS Lightsail 에서 제공하는 인스턴스(Ubuntu)를 이용하여 프로젝트를 배포
 
 ## 6. 트러블 슈팅
- - 프로젝트 검색 기능 : ![프로젝트 검색](https://yoon-dev.tistory.com/46)
- - 프로젝트 자랑하기 : ![프로젝트 자랑하기](https://yoon-dev.tistory.com/47)
+ - [프로젝트 검색하기](https://yoon-dev.tistory.com/46)
+ - [프로젝트 자랑하기](https://yoon-dev.tistory.com/47)
